@@ -2,7 +2,7 @@ import { IJupyterWidgetRegistry} from '@jupyter-widgets/base';
 import { ILabShell, ILayoutRestorer } from "@jupyterlab/application";
 import { INotebookTracker } from '@jupyterlab/notebook';
 import { IMainMenu } from '@jupyterlab/mainmenu';
-import {DataRegistry} from "@g2nb/nbtools/lib/dataregistry";
+import { DataRegistry } from "@g2nb/nbtools/lib/dataregistry";
 import { ToolRegistry } from '@g2nb/nbtools';
 // import { ContextManager } from '@g2nb/nbtools';
 import { ContextManager } from '@g2nb/nbtools/lib/context';
@@ -126,7 +126,7 @@ const initNotebookTracker = (notebookTracker) => {
 
                 for (var i = 0; i < cells.length; i++){
                     if (cells[i].model.metadata.get('galaxy_cell') ){
-                        if (cells[i].model.metadata.get('html') == undefined || cells[i].model.metadata.get('html') == '') {
+                        if (cells[i].model.metadata.get('html') === undefined || cells[i].model.metadata.get('html') == '') {
                             removeAllChildNodes(cells[i].outputArea.node)
                             notebook.activeCellIndex = i
                             await NotebookActions.run(notebook, notebookSession);            

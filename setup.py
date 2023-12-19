@@ -50,8 +50,11 @@ setup_args = dict(
     long_description=LONG_DESCRIPTION,
     include_package_data=True,
     install_requires=[
-        "ipywidgets>=7.6.0",
-        "jupyterlab~=3.0",
+        'bioblend'
+        'genepattern-python'
+        'nbtools>=23.4',
+        "ipywidgets>7,<9",
+        "jupyterlab>=3.4,<4",
     ],
     data_files=[("share/jupyter/nbtools", ["nbtools/GiN.json"])],
     packages=find_packages(),

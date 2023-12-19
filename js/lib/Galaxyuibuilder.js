@@ -22,8 +22,6 @@ import { NotebookActions } from '@jupyterlab/notebook';
 import { Private,  getRanNotebookIds, getIndex } from './notebookActions';
 import $ from 'jquery'
 import {FileStreamer } from './utils'
-import { UploadModel, UploadView } from '@g2nb/ipyuploads';
-
 
 
 export class GalaxyUIBuilderModel extends BaseWidgetModel{
@@ -149,14 +147,13 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
         this.AddHelpSection(inputs['help'])
         // this.iterate_over_tool_cells()
 
-        if (this.model.get('name') == 'login'){
+        if (this.model.get('name') === 'login') {
             this.login_form()
             this._submit_keypress()
             this.register_button()
         }
         
-        if (this.model.get('name') != 'login' && 'GiN_data_upload_tool') {
-
+        if (this.model.get('name') !== 'login' && 'GiN_data_upload_tool') {
             this.generate_tool_form()
             this.add_tool_migration_button(this.model.get('origin'))
             this.add_dataset_table()
@@ -164,11 +161,11 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             this.add_galaxy_cell_metadata()
         }
 
-        if (this.model.get('galaxy_tool_id') == 'GiN_data_upload_tool') {
+        if (this.model.get('galaxy_tool_id') === 'GiN_data_upload_tool') {
             this.data_upload_tool()
         }
 
-
+        this.update_metadata();
     }
 
     refresh_cells(){
@@ -5201,19 +5198,19 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
 
         // this.update_metadata_FormState({}, {})
         var logingForm = this.el.querySelector('.login-form-div')
-        var formdata = logingForm.parentNode.parentNode.parentNode.parentNode.outerHTML       
+        var formdata = logingForm.parentNode.parentNode.parentNode.parentNode.outerHTML
         let fint = JSON.stringify(formdata)
         this.el.querySelector('#refresh-galaxy-cells').style.display = 'none'
         this.el.querySelector('.auth-error').style.display = 'none'
         this.el.querySelector('.auth-waiting').style.display = 'none';
 
-        var credentials = { 'server':null, 'email':null, 'password':null,  'api_key': null }  
+        var credentials = { 'server':null, 'email':null, 'password':null,  'api_key': null }
         var inputs = this.$(".tabcontent:visible")[0].querySelectorAll('input')
 
         for (var i = 0; i < inputs.length; i++){
             if (inputs[i].value == '' && inputs[i].style.display == 'block'){
                 inputs[i].style.background = 'pink'
-                return 
+                return
             }else if (inputs[i].value != '' && inputs[i].style.display == 'block'){
                 inputs[i].style.background = ''
             }
@@ -5231,8 +5228,6 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
         }
 
         var jobs = await KernelSideDataObjects(`import json\nimport base64\nfrom GiN.authwidget import GalaxyAuthWidget\na  = GalaxyAuthWidget()\na.login(json.loads(base64.b64decode("${btoa(JSON.stringify(credentials))}")))`)
-           
-        KernelSideDataObjects(`del a`)
 
         if (jobs.state === 'error' ) {
 
@@ -5253,21 +5248,10 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             this.el.querySelector('#refresh-galaxy-cells').style.display = 'block'
             this.hide_run_buttons(true)
 
-            if (this.el.querySelector('#form-restore').checked ){
-
-                if (!ContextManager.notebook_tracker) return;               
-                if (!ContextManager.notebook_tracker.currentWidget) return;
-                var notebookTracker = ContextManager.notebook_tracker
-
-                const notebook = notebookTracker.currentWidget.content
-                const notebookHasBeenRan = getRanNotebookIds().includes(notebook.id)
-                // if(!notebookHasBeenRan) {
-                    this.runAllGalaxyCells()
-                // }
-            }
+            KernelSideDataObjects(`a.register_tools()`)
         }
-        
-        Private.origins.push(credentials['server']); 
+
+        Private.origins.push(credentials['server']);
     }
 
     async SubmitJob(inputs, history_id){
@@ -5278,7 +5262,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             var origin = this.model.get('origin')
         }
 
-        var toolforms = this.el.querySelector('.tool-forms') 
+        var toolforms = this.el.querySelector('.tool-forms')
         var hl = this.el.querySelector('#dataset-history-list')
 
         for (var i = 0; i <  hl.options.length; i++ ){
@@ -5301,7 +5285,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             for (var i = 0; i < jobs['jobs'].length; i++ ) {
                 this.JobStatusTemplate(toolforms, jobs['jobs'][i])
             }
-            
+
             var data_list_div = this.el.querySelector('.history-dataset-list');
             var e = this.el.querySelector('.list-item')
             e.parentElement.removeChild(e)
@@ -5317,7 +5301,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
         this.el.querySelectorAll('.nbtools-run').forEach((button) =>{
             if (hide == true){
                 button.style.display = 'none';
-            } else { 
+            } else {
                 button.style.display = 'block';
             }
         });
@@ -5363,7 +5347,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             }
         }
         return display_apps
-    }  
+    }
 
     register_button() {
 
@@ -5371,8 +5355,8 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             window.open('https://usegalaxy.org/login/start?redirect=None', '_blank');
         })
     }
-    
+
     _submit_keypress() {
-       
+
     }
  }
