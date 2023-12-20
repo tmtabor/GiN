@@ -42,7 +42,7 @@ function activateWidgetExtension(app, registry, mainmenu, restorer, shell, noteb
     init_context(app, notebook_tracker)
 
     // const data_registry = new DataRegistry();
-    const tool_registry = new ToolRegistry();
+    const tool_registry = new ToolRegistry({});
     const data_registry = new DataRegistry();
 
     registry.registerWidget({
@@ -57,9 +57,8 @@ function init_context(app, notebook_tracker) {
     ContextManager.jupyter_app = app;
     ContextManager.notebook_tracker = notebook_tracker;
     ContextManager.context();
-    notebook_tracker
 
-    initNotebookTracker(notebook_tracker)
+    // initNotebookTracker(notebook_tracker)
     
 }
 
@@ -113,12 +112,12 @@ const initNotebookTracker = (notebookTracker) => {
 
             const notebook = notebookTracker.currentWidget.content;
             const notebookSession = notebookTracker.currentWidget.context.sessionContext;
-        
+
             if ( notebookHasBeenRan.includes(notebook.id) === false) {
             //FixME Form Restore insteed cell run
 
                 Private.ranNotebookIds.push(notebook.id);
-            
+
                 notebookTracker.currentWidget.sessionContext.ready.then(() =>
                 notebookTracker.currentWidget.revealed).then(async () => {
 
@@ -129,8 +128,8 @@ const initNotebookTracker = (notebookTracker) => {
                         if (cells[i].model.metadata.get('html') === undefined || cells[i].model.metadata.get('html') == '') {
                             removeAllChildNodes(cells[i].outputArea.node)
                             notebook.activeCellIndex = i
-                            await NotebookActions.run(notebook, notebookSession);            
-                       
+                            await NotebookActions.run(notebook, notebookSession);
+
                         } else{
                             // cells[i].inputArea.hide()
                             removeAllChildNodes(cells[i].outputArea.node)

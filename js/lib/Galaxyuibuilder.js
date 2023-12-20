@@ -2280,14 +2280,14 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
                     name: upload.file.name,
                 };
 
-                title.parentElement.removeChild(title)
+                title?.parentElement?.removeChild(title)
 
                 delete data["files"]
 
                 elm.style.display = 'block'
-                self.submitPayload(data, credentials)
-                this.el.querySelector('#inputupload').value = null
-                this.el.querySelector('.upload-status-icon').style.display = 'none'
+                self.submitPayload(data, null);
+                self.el.querySelector('#inputupload').value = null
+                self.el.querySelector('.upload-status-icon').style.display = 'none'
             }
         })
         // Check if there are any previous uploads to continue.
@@ -2374,8 +2374,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
         // this.hide_run_buttons(true)
 
         var children = this.element.querySelector('.Galaxy-form')
-        var upload_link 
-        var upload_method
+        var upload_link
 
         var upload_method = children.querySelectorAll('.tabcontent')
 
@@ -5227,7 +5226,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             credentials['password'] = inputs[2].value
         }
 
-        var jobs = await KernelSideDataObjects(`import json\nimport base64\nfrom GiN.authwidget import GalaxyAuthWidget\na  = GalaxyAuthWidget()\na.login(json.loads(base64.b64decode("${btoa(JSON.stringify(credentials))}")))`)
+        var jobs = await KernelSideDataObjects(`import json\nimport base64\nfrom GiN.authwidget import GalaxyAuthWidget\ngaw  = GalaxyAuthWidget()\ngaw.login(json.loads(base64.b64decode("${btoa(JSON.stringify(credentials))}")))`)
 
         if (jobs.state === 'error' ) {
 
@@ -5248,7 +5247,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             this.el.querySelector('#refresh-galaxy-cells').style.display = 'block'
             this.hide_run_buttons(true)
 
-            KernelSideDataObjects(`a.register_tools()`)
+            KernelSideDataObjects(`gaw.register_tools()`)
         }
 
         Private.origins.push(credentials['server']);
