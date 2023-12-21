@@ -750,6 +750,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
             case "boolean":
                 this.add_boolean_field(input_def, form_parent, name_prefix)
                 break
+            case "data_column":
             case "select":
                 this.add_select_field(input_def, form_parent, name_prefix)
                 break
@@ -761,7 +762,9 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
                 break
             case "drill_down":
                 this.add_drill_down_section(input_def, form_parent, name_prefix)
-                break
+                break;
+            default:
+                this.add_input_value(input_def, form_parent, name_prefix)
         }
     }
      // remove() {
@@ -2950,7 +2953,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
         row.append(FileManu)
         row.append(help)
 
-        if (input_def.type == 'data_collection'){
+        if (input_def.type === 'data_collection') {
             for (var i = 0; i < options['hdca'].length; i++) {
                 const el = document.createElement("option");
                 if (input_def['options']['hdca'].length !== 0) {
@@ -2962,7 +2965,7 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
                 Select.appendChild(el);
             }
 
-        } else {
+        } else if (input_def.type === 'data') {
             for (var i = 0; i < options['hda'].length; i++) {
                 const opt = document.createElement("option");
                 if (input_def['options']['hda'].length !== 0) {
