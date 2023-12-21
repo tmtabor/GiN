@@ -3747,12 +3747,13 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
  
         Button.addEventListener("click", async (e) => {
 
-            if (SectionDiv.childNodes.length == 0){
-                section()
+            if (SectionDiv.style.display === 'none'){
+                if (SectionDiv.childNodes.length === 0) section()
                 this.section[input_def['name']] = true
                 SectionDiv.style.display = 'block'
-            } else{
-                self.removeAllChildNodes(SectionDiv)
+            }
+            else {
+                // self.removeAllChildNodes(SectionDiv)
                 this.section[input_def['name']] = false
                 SectionDiv.style.display = 'none'
             }
