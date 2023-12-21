@@ -50,8 +50,8 @@ setup_args = dict(
     long_description=LONG_DESCRIPTION,
     include_package_data=True,
     install_requires=[
-        'bioblend'
-        'genepattern-python'
+        'bioblend',
+        'genepattern-python',
         'nbtools>=23.4',
         "ipywidgets>7,<9",
         "jupyterlab>=3.4,<4",
