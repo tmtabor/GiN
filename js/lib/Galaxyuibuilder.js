@@ -2773,8 +2773,11 @@ export class GalaxyUIBuilderView extends BaseWidgetView {
         }
 
         Button.addEventListener("click", async (e)=>{ 
-            var Count = row.children.length
-            add_internal_repeat(input_def['inputs'], Count)
+            var Count = row.children.length;
+
+            if (input_def.cache && Object.keys(input_def.cache).length > 0)
+                add_internal_repeat(input_def.cache[Object.keys(input_def.cache)[0]], Count);
+            else add_internal_repeat(input_def['inputs'], Count);
       
             var history_id = self.el.querySelector('#dataset-history-list').value
             var form = self.el.querySelector('.Galaxy-form')
